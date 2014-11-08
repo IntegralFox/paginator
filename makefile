@@ -8,7 +8,7 @@ bin/vmm: obj/vmm.o
 	$(CC) $(LFLAGS) vmm.o
 
 obj/vmm.o: src/vmm.c
-	$(CC) $(CFLAGS) -o obj/vmm.o vmm.c
+	$(CC) $(CFLAGS) -o obj/vmm.o src/vmm.c
 
 clean:
 	rm -rf bin/vmm obj/*
