@@ -5,8 +5,8 @@
 #include <stdio.h>
 
 int main(int argc, char** argv) {
-	FILE* bstore
-	FILE* address
+	FILE* bstore;
+	FILE* address;
 
 	// Exit if insufficient arguments
 	if (argc < 3) {
@@ -20,7 +20,7 @@ int main(int argc, char** argv) {
 		return 0;
 	}
  	if ((address = fopen(argv[2], "r")) == NULL) {
-		fprintf(stderr, "vmm: $s: Cannot open address file", argv[2]);
+		fprintf(stderr, "vmm: %s: Cannot open address file", argv[2]);
 		return 0;
 	}
 
