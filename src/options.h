@@ -3,17 +3,8 @@
 #ifndef VMM_OPTIONS
 #define VMM_OPTIONS
 
-unsigned int printHex = 0;
+extern unsigned int printHex;
 
-void parseOptions(int& argc, char** argv) {
-	int flag;
-	while ((flag = getopt(argc, argv, "h")) != -1) {
-		if (flag == 'h') {
-			printHex = 1;
-		}
-	}
-	argc -= optind;
-	argv += optind;
-}
+void parseOptions(int*, char***);
 
 #endif
