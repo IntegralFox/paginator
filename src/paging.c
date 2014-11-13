@@ -4,7 +4,6 @@
 #include <stdio.h>
 #include "paging.h"
 #include "options.h"
-#include "globals.h"
 
 FILE* backingStore;
 
@@ -20,7 +19,8 @@ void initializePageTable() {
 }
 
 int openBackingStore(char* path) {
-	return backingStore = fopen(path, "r");
+	backingStore = fopen(path, "r");
+	return (int) backingStore;
 }
 
 void freePageTable() {
@@ -29,6 +29,8 @@ void freePageTable() {
 }
 
 unsigned long pageTableFrame(unsigned long page) {
+	// Add logic
+	return 0;
 }
 
 unsigned long pageOf(unsigned long address) {
