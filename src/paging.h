@@ -25,6 +25,9 @@ int openBackingStore(char*);
 // Frees the page Table
 void freePageTable();
 
+// Returns a the frame for a page (and reads one in on miss)
+unsigned long pageTableFrame(unsigned long);
+
 // Gets the page number from a logical address
 unsigned long pageOf(unsigned long);
 

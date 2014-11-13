@@ -5,13 +5,14 @@
 #include <stdio.h>
 #include "options.h"
 #include "paging.h"
+#include "tlb.h"
 
 // Wrapper to resolve a page to a frame
 unsigned long pageToFrame(unsigned long);
 
 int main(int argc, char** argv) {
-	FILE* backingStore;
 	FILE* addressList;
+	char* physMem;
 	unsigned long address, page, offset, frame;
 
 	// Initialize some stuff
@@ -25,7 +26,7 @@ int main(int argc, char** argv) {
 	}
 
 	// Open the files and exit on failure
- 	if ((backingStore = fopen(argv[0], "r")) == NULL) {
+ 	if (openBackingStore(argv[0])) {
 		fprintf(stderr, "vmm: %s: Cannot open backing store binary\n", argv[0]);
 		return 0;
 	}
@@ -33,6 +34,8 @@ int main(int argc, char** argv) {
 		fprintf(stderr, "vmm: %s: Cannot open address file\n", argv[1]);
 		return 0;
 	}
+
+	// Allocate "physical" memory
 
 	// Do Stuff
 	while (fscanf(addressList, "%ld", &address) != EOF) {
@@ -47,7 +50,6 @@ int main(int argc, char** argv) {
 	}
 
 	// Free all resources
-	fclose(backingStore);
 	fclose(addressList);
 	freePageTable();
 
