@@ -34,7 +34,7 @@ int main(int argc, char** argv) {
 	while (fscanf(addressList, "%ld", &address) != EOF) {
 		page = pageOf(address);
 		offset = offsetOf(address);
-		if (printHex) {
+		if (opt.printHex) {
 			printf("0x%4.4lX -> 0x%2.2lX + 0x%2.2lX\n", address, page, offset);
 		} else {
 			printf("%ld -> %ld + %ld\n", address, page, offset);
