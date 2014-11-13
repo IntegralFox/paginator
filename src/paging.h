@@ -16,6 +16,17 @@
 #define LOG_ADDR_SIZE (OFFSET_BITS + PAGE_BITS)
 #define LOG_ADDR_MASK ((1 << LOG_ADDR_SIZE) - 1)
 
+struct Page {
+	unsigned long frame;
+	int valid;
+};
+
+// Sets up the page table structures
+void initializePageTable();
+
+// Frees the page Table
+void freePageTable();
+
 // Gets the page number from a logical address
 unsigned long pageOf(unsigned long);
 
