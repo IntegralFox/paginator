@@ -27,7 +27,7 @@ int main(int argc, char** argv) {
 	}
 
 	// Open the files and exit on failure
- 	if (openBackingStore(argv[0])) {
+ 	if (openBackingStore(argv[0]) == 0) {
 		fprintf(stderr, "vmm: %s: Cannot open backing store binary\n", argv[0]);
 		return 0;
 	}
