@@ -16,13 +16,11 @@
 #define LOG_ADDR_SIZE (OFFSET_BITS + PAGE_BITS)
 #define LOG_ADDR_MASK ((1 << LOG_ADDR_SIZE) - 1)
 
-struct Page {
-	unsigned long frame;
-	int valid;
-};
-
 // Sets up the page table structures
 void initializePageTable();
+
+// Opens the backing store file to read into memory pages
+int openBackingStore(char*);
 
 // Frees the page Table
 void freePageTable();
