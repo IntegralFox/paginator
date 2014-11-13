@@ -3,6 +3,7 @@
  * Date: 2014-11-08 */
 
 #include <stdio.h>
+#include <stdlib.h>
 #include "options.h"
 #include "paging.h"
 #include "tlb.h"
@@ -36,6 +37,7 @@ int main(int argc, char** argv) {
 	}
 
 	// Allocate "physical" memory
+	physMem = (char*) malloc(opt.frameSize * opt.frameNum);
 
 	// Do Stuff
 	while (fscanf(addressList, "%ld", &address) != EOF) {
@@ -50,6 +52,7 @@ int main(int argc, char** argv) {
 	}
 
 	// Free all resources
+	free(physMem);
 	fclose(addressList);
 	freePageTable();
 
