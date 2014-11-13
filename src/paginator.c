@@ -6,13 +6,17 @@
 #include "options.h"
 #include "paging.h"
 
+// Wrapper to resolve a page to a frame
+unsigned long pageToFrame(unsigned long);
+
 int main(int argc, char** argv) {
 	FILE* backingStore;
 	FILE* addressList;
-	unsigned long address, page, offset;
+	unsigned long address, page, offset, frame;
 
-	// Parse option flags
+	// Initialize some stuff
 	parseOptions(&argc, &argv);
+	initializePageTable();
 
 	// Exit if insufficient arguments
 	if (argc < 2) {
@@ -22,11 +26,11 @@ int main(int argc, char** argv) {
 
 	// Open the files and exit on failure
  	if ((backingStore = fopen(argv[0], "r")) == NULL) {
-		fprintf(stderr, "vmm: %s: Cannot open backing store binary\n", argv[1]);
+		fprintf(stderr, "vmm: %s: Cannot open backing store binary\n", argv[0]);
 		return 0;
 	}
  	if ((addressList = fopen(argv[1], "r")) == NULL) {
-		fprintf(stderr, "vmm: %s: Cannot open address file\n", argv[2]);
+		fprintf(stderr, "vmm: %s: Cannot open address file\n", argv[1]);
 		return 0;
 	}
 
@@ -34,6 +38,7 @@ int main(int argc, char** argv) {
 	while (fscanf(addressList, "%ld", &address) != EOF) {
 		page = pageOf(address);
 		offset = offsetOf(address);
+		frame = pageToFrame(page);
 		if (opt.printHex) {
 			printf("0x%4.4lX -> 0x%2.2lX + 0x%2.2lX\n", address, page, offset);
 		} else {
@@ -44,6 +49,17 @@ int main(int argc, char** argv) {
 	// Free all resources
 	fclose(backingStore);
 	fclose(addressList);
+	freePageTable();
 
 	return 0;
+}
+
+unsigned long pageToFrame(unsigned long page) {
+	unsigned long frame;
+	frame = tlbFrame(page);
+	if (frame == -1) {
+		frame = pageTableFrame(page);
+		tlbUpdate(page, frame);
+	}
+	return frame;
 }
