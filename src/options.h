@@ -3,7 +3,14 @@
 #ifndef VMM_OPTIONS
 #define VMM_OPTIONS
 
-extern unsigned int printHex;
+struct Options {
+	int printHex;
+	int frameSize;
+	int frameNum;
+	int pageNum;
+};
+
+extern struct Options opt;
 
 void parseOptions(int*, char***);
 
