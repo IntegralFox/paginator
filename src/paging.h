@@ -24,4 +24,13 @@ unsigned long pageOf(unsigned long);
 // Gets the offset from a logical address
 unsigned long offsetOf(unsigned long);
 
+// Copies a page from the backing store into physical memory
+void copyPage(char*, unsigned long, unsigned long);
+
+// Finds an open frame or victimizes one
+unsigned long findFreeFrame();
+
+// Selects a frame to victimize
+unsigned long victimizeFrame();
+
 #endif
