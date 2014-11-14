@@ -32,18 +32,17 @@ void closeBackingStore() {
 	fclose(backingStore);
 }
 
-unsigned long pageTableFrame(unsigned long page) {
+unsigned long pageTableFrame(unsigned long page, char* physMem) {
 	// Add logic
 	return 0;
 }
 
 unsigned long pageOf(unsigned long address) {
-	address = address & LOG_ADDR_MASK;
-	address = address >> OFFSET_BITS;
+	address = address >> opt.offsetBits;
 	return address;
 }
 
 unsigned long offsetOf(unsigned long address) {
-	address = address & OFFSET_MASK;
+	address = address & opt.offsetMask;
 	return address;
 }

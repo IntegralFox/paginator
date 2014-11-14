@@ -10,7 +10,10 @@ void parseOptions(int* argc, char*** argv) {
 	opt.printHex = 0;
 	opt.frameSize = 256;
 	opt.frameNum = 256;
+	opt.offsetBits = 8;
+	opt.offsetMask = (1 << opt.offsetBits) - 1;
 	opt.pageNum = 256;
+	opt.pageBits = 8;
 
 	// Parse any new options
 	int flag;

@@ -7,7 +7,10 @@ struct Options {
 	int printHex;
 	int frameSize;
 	int frameNum;
+	unsigned long offsetMask;
+	int offsetBits;
 	int pageNum;
+	int pageBits;
 };
 
 extern struct Options opt;
