@@ -28,6 +28,10 @@ void freePageTable() {
 	fclose(backingStore);
 }
 
+void closeBackingStore() {
+	fclose(backingStore);
+}
+
 unsigned long pageTableFrame(unsigned long page) {
 	// Add logic
 	return 0;

@@ -54,6 +54,7 @@ int main(int argc, char** argv) {
 	// Free all resources
 	free(physMem);
 	fclose(addressList);
+	closeBackingStore();
 	freePageTable();
 
 	return 0;
