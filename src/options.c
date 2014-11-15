@@ -14,6 +14,7 @@ void parseOptions(int* argc, char*** argv) {
 	opt.offsetMask = (1 << opt.offsetBits) - 1;
 	opt.pageNum = 256;
 	opt.pageBits = 8;
+	opt.pageMask = ~opt.offsetMask;
 
 	// Parse any new options
 	int flag;

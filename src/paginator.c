@@ -16,41 +16,44 @@ FILE* backingStore;
 unsigned long pageToFrame(unsigned long);
 
 int main(int argc, char** argv) {
-	unsigned long address, page, offset, frame;
+	unsigned long logicalAddress, physicalAddress, page, offset, frame, value;
 
 	// Initialize some stuff
 	parseOptions(&argc, &argv);
-	initializePageTable();
 
 	// Exit if insufficient arguments
 	if (argc < 2) {
-		fprintf(stderr, "vmm: Insufficient arguments\nUsage: vmm backing_store_file address_file\n");
+		fprintf(stderr, "paginator: Insufficient arguments\nUsage: vmm backing_store_file address_file\n");
 		return 0;
 	}
 
 	// Open the files and exit on failure
  	if ((backingStore = fopen(argv[0], "r")) == NULL) {
-		fprintf(stderr, "vmm: %s: Cannot open backing store binary\n", argv[0]);
+		fprintf(stderr, "paginator: %s: Cannot open backing store binary\n", argv[0]);
 		return 0;
 	}
  	if ((addressList = fopen(argv[1], "r")) == NULL) {
-		fprintf(stderr, "vmm: %s: Cannot open address file\n", argv[1]);
+		fprintf(stderr, "paginator: %s: Cannot open address file\n", argv[1]);
 		fclose(backingStore);
 		return 0;
 	}
 
-	// Allocate "physical" memory
+	// Allocate "physical" memory and management structs
 	physMem = (char*) malloc(opt.frameSize * opt.frameNum);
+	initializePageTable();
+	tlbInitialize();
 
 	// Do Stuff
-	while (fscanf(addressList, "%ld", &address) != EOF) {
-		page = pageOf(address);
-		offset = offsetOf(address);
+	while (fscanf(addressList, "%ld", &logicalAddress) != EOF) {
+		page = pageOf(logicalAddress);
+		offset = offsetOf(logicalAddress);
 		frame = pageToFrame(page);
+		physicalAddress = (frame << opt.offsetBits) | offset;
+		value = physMem[physicalAddress];
 		if (opt.printHex) {
-			printf("0x%4.4lX -> 0x%2.2lX + 0x%2.2lX\n", address, page, offset);
+			printf("Virtual address: 0x%4lX Physical address: 0x%4lX Value: 0x%2X\n", logicalAddress, physicalAddress, value);
 		} else {
-			printf("%ld -> %ld + %ld\n", address, page, offset);
+			printf("Virtual address: %ld Physical address: %ld Value: %d\n", logicalAddress, physicalAddress, value);
 		}
 	}
 

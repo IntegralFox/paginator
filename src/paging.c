@@ -33,7 +33,6 @@ unsigned long pageTableFrame(unsigned long page, char* physMem, FILE* backingSto
 		pageTable[page].valid = 1;
 		return freeFrame;
 	}
-	return 0;
 }
 
 unsigned long pageOf(unsigned long address) {
@@ -47,7 +46,7 @@ unsigned long offsetOf(unsigned long address) {
 }
 
 void copyPage(FILE* backingStore, unsigned long page, char* physMem, unsigned long frame) {
-	fseek(backingStore, frame << opt.offsetBits, SEEK_SET);
+	fseek(backingStore, page << opt.offsetBits, SEEK_SET);
 	fread(physMem + (frame << opt.offsetBits), 1, opt.frameSize, backingStore);
 }
 
@@ -64,6 +63,7 @@ unsigned long findFreeFrame() {
 
 unsigned long victimizeFrame() {
 	unsigned long i;
+	printf("Needed a victim! This should not have happened!!!\n");
 	// Select Frame
 	// Set false
 	// Invalidate page table entry

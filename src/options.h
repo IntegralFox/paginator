@@ -10,6 +10,7 @@ struct Options {
 	unsigned long offsetMask;
 	int offsetBits;
 	int pageNum;
+	unsigned long pageMask;
 	int pageBits;
 };
 
