@@ -8,12 +8,14 @@
 #include "paging.h"
 #include "tlb.h"
 
+char* physMem;
+FILE* addressList;
+FILE* backingStore;
+
 // Wrapper to resolve a page to a frame
 unsigned long pageToFrame(unsigned long);
 
 int main(int argc, char** argv) {
-	FILE* addressList;
-	char* physMem;
 	unsigned long address, page, offset, frame;
 
 	// Initialize some stuff
@@ -27,12 +29,13 @@ int main(int argc, char** argv) {
 	}
 
 	// Open the files and exit on failure
- 	if (openBackingStore(argv[0]) == 0) {
+ 	if ((backingStore = fopen(argv[0], "r")) == NULL) {
 		fprintf(stderr, "vmm: %s: Cannot open backing store binary\n", argv[0]);
 		return 0;
 	}
  	if ((addressList = fopen(argv[1], "r")) == NULL) {
 		fprintf(stderr, "vmm: %s: Cannot open address file\n", argv[1]);
+		fclose(backingStore);
 		return 0;
 	}
 
@@ -54,7 +57,7 @@ int main(int argc, char** argv) {
 	// Free all resources
 	free(physMem);
 	fclose(addressList);
-	closeBackingStore();
+	fclose(backingStore);
 	freePageTable();
 
 	return 0;
@@ -64,7 +67,7 @@ unsigned long pageToFrame(unsigned long page) {
 	unsigned long frame;
 	frame = tlbFrame(page);
 	if (frame == -1) {
-		frame = pageTableFrame(page);
+		frame = pageTableFrame(page, physMem, backingStore);
 		tlbUpdate(page, frame);
 	}
 	return frame;

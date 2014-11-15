@@ -5,24 +5,16 @@
 #include "paging.h"
 #include "options.h"
 
-FILE* backingStore;
-int* frameTable;
-
 struct Page {
 	unsigned long frame;
 	int valid;
 };
-
 struct Page* pageTable;
+int* frameTable;
 
 void initializePageTable() {
 	pageTable = (struct Page*) calloc(opt.pageNum, sizeof(struct Page));
 	frameTable = (int*) calloc(opt.frameNum, sizeof(int));
-}
-
-int openBackingStore(char* path) {
-	backingStore = fopen(path, "r");
-	return (int) backingStore;
 }
 
 void freePageTable() {
@@ -30,17 +22,13 @@ void freePageTable() {
 	free(frameTable);
 }
 
-void closeBackingStore() {
-	fclose(backingStore);
-}
-
-unsigned long pageTableFrame(unsigned long page, char* physMem) {
+unsigned long pageTableFrame(unsigned long page, char* physMem, FILE* backingStore) {
 	unsigned long freeFrame;
 	if (pageTable[page].valid) {
 		return pageTable[page].frame;
 	} else {
 		freeFrame = findFreeFrame();
-		copyPage(physMem, page, freeFrame);
+		copyPage(backingStore, page, physMem, freeFrame);
 		pageTable[page].frame = freeFrame;
 		pageTable[page].valid = 1;
 		return freeFrame;
@@ -58,7 +46,7 @@ unsigned long offsetOf(unsigned long address) {
 	return address;
 }
 
-void copyPage(char* physMem, unsigned long page, unsigned long frame) {
+void copyPage(FILE* backingStore, unsigned long page, char* physMem, unsigned long frame) {
 	fseek(backingStore, frame << opt.offsetBits, SEEK_SET);
 	fread(physMem + (frame << opt.offsetBits), 1, opt.frameSize, backingStore);
 }
