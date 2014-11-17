@@ -65,10 +65,27 @@ unsigned long findFreeFrame() {
 }
 
 unsigned long victimizeFrame() {
-	unsigned long i;
-	printf("Needed a victim! This should not have happened!!!\n");
-	// Select Frame
-	// Set false
-	// Invalidate page table entry
-	return i;
+	unsigned long i, frame;
+	clock_t time;
+
+	// LRU replacement
+	// Select the smallest time (least recently accessed)
+	frame = 0;
+	time = frameTable[0].time;
+	for (i = 1; i < opt.frameNum; ++i) {
+		if (frameTable[i].time < time) {
+			frame = i;
+			time = frameTable[i].time;
+		}
+	}
+
+	// Invalidate the page in the page table
+	for (i = 0; i < opt.pageNum; ++i) {
+		if (pageTable[i].frame == frame) {
+			pageTable[i].valid = 0;
+			break;
+		}
+	}
+
+	return frame;
 }
