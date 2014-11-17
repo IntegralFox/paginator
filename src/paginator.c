@@ -51,7 +51,7 @@ int main(int argc, char** argv) {
 		physicalAddress = (frame << opt.offsetBits) | offset;
 		value = physMem[physicalAddress];
 		if (opt.printHex) {
-			printf("Virtual address: 0x%4lX Physical address: 0x%4lX Value: 0x%2X\n", logicalAddress, physicalAddress, value);
+			printf("Virtual address: 0x%4.4lX Physical address: 0x%4.4lX Value: 0x%2.2X\n", logicalAddress, physicalAddress, value);
 		} else {
 			printf("Virtual address: %ld Physical address: %ld Value: %d\n", logicalAddress, physicalAddress, value);
 		}

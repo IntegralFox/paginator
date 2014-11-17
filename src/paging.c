@@ -1,7 +1,6 @@
 /* Implementation of page related activites */
 
 #include <stdlib.h>
-#include <stdio.h>
 #include "paging.h"
 #include "options.h"
 
@@ -10,11 +9,11 @@ struct Page {
 	int valid;
 };
 struct Page* pageTable;
-int* frameTable;
+struct Frame* frameTable;
 
 void initializePageTable() {
 	pageTable = (struct Page*) calloc(opt.pageNum, sizeof(struct Page));
-	frameTable = (int*) calloc(opt.frameNum, sizeof(int));
+	frameTable = (struct Frame*) calloc(opt.frameNum, sizeof(struct Frame));
 }
 
 void freePageTable() {
@@ -23,16 +22,17 @@ void freePageTable() {
 }
 
 unsigned long pageTableFrame(unsigned long page, char* physMem, FILE* backingStore) {
-	unsigned long freeFrame;
+	unsigned long frame;
 	if (pageTable[page].valid) {
-		return pageTable[page].frame;
+		frame = pageTable[page].frame;
 	} else {
-		freeFrame = findFreeFrame();
-		copyPage(backingStore, page, physMem, freeFrame);
-		pageTable[page].frame = freeFrame;
+		frame = findFreeFrame();
+		copyPage(backingStore, page, physMem, frame);
+		pageTable[page].frame = frame;
 		pageTable[page].valid = 1;
-		return freeFrame;
 	}
+	frameTable[frame].time = clock();
+	return frame;
 }
 
 unsigned long pageOf(unsigned long address) {
@@ -53,8 +53,8 @@ void copyPage(FILE* backingStore, unsigned long page, char* physMem, unsigned lo
 unsigned long findFreeFrame() {
 	unsigned long i;
 	for (i = 0; i < opt.frameNum; ++i) {
-		if (!frameTable[i]) {
-			frameTable[i] = 1;
+		if (!frameTable[i].valid) {
+			frameTable[i].valid = 1;
 			return i;
 		}
 	}

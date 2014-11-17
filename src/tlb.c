@@ -1,6 +1,7 @@
 /* Implentation of TLB */
 
 #include "tlb.h"
+#include "paging.h"
 
 struct TlbItem {
 	unsigned long page;
@@ -21,6 +22,7 @@ unsigned long tlbFrame(unsigned long page) {
 	int i;
 	for (i = 0; i < TLB_SIZE; ++i) {
 		if (tlb[i].valid && tlb[i].page == page) {
+			frameTable[tlb[i].frame].time = clock();
 			return tlb[i].frame;
 		}
 	}
@@ -35,4 +37,3 @@ void tlbUpdate(unsigned long page, unsigned long frame) {
 	tlb[next].valid = 1;
 	next = (next + 1) % TLB_SIZE;
 }
-

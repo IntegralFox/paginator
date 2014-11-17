@@ -4,6 +4,13 @@
 #define VMM_PAGING
 
 #include <stdio.h>
+#include <time.h>
+
+struct Frame {
+	int valid;
+	clock_t time;
+};
+extern struct Frame* frameTable;
 
 // Sets up the page table structures
 void initializePageTable();
