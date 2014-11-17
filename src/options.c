@@ -1,6 +1,7 @@
 /* Option implementation */
 
 #include <unistd.h>
+#include <stdlib.h>
 #include "options.h"
 
 struct Options opt;
@@ -13,14 +14,19 @@ void parseOptions(int* argc, char*** argv) {
 	opt.offsetBits = 8;
 	opt.offsetMask = (1 << opt.offsetBits) - 1;
 	opt.pageNum = 256;
-	opt.pageBits = 8;
 	opt.pageMask = ~opt.offsetMask;
 
 	// Parse any new options
 	int flag;
-	while ((flag = getopt(*argc, *argv, "h")) != -1) {
-		if (flag == 'h') {
+	while ((flag = getopt(*argc, *argv, "f:hp:")) != -1) {
+		if (flag == '?') {
+			*argc = 0;
+		} else if (flag == 'h') {
 			opt.printHex = 1;
+		} else if (flag == 'f' ) {
+			opt.frameNum = atoi(optarg);
+		} else if (flag == 'p') {
+			opt.pageNum = atoi(optarg);
 		}
 	}
 	*argc -= optind;

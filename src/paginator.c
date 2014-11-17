@@ -23,7 +23,7 @@ int main(int argc, char** argv) {
 
 	// Exit if insufficient arguments
 	if (argc < 2) {
-		fprintf(stderr, "paginator: Insufficient arguments\nUsage: vmm backing_store_file address_file\n");
+		fprintf(stderr, "\nUsage: paginator [options] backing_store_file address_file\nOptions:\n\t-h\t\tPrint addresses in hexadecimal\n\t-f <number>\tNumber of frames in physical memory (default 256)\n\t-p <number>\tNumber of pages in backing store file (default 256)\n\n");
 		return 0;
 	}
 
@@ -66,6 +66,7 @@ int main(int argc, char** argv) {
 	// Show statistics
 	printf("\n-- Statistics --\n");
 	printf("Addresses Resolved: %ld\n", pageHits + pageMisses);
+	printf("Frames: %-4d  Pages: %-4d  Page Victims: %-4d\n", opt.frameNum, opt.pageNum, pageVictims);
 	printf("Page hits: %-4ld  Page misses: %-4ld  H/M Ratio: %-6.3f  Page Fault Rate: %3ld%%\n",
 		pageHits, pageMisses, ((double)pageHits / (double)pageMisses),
 		(pageMisses * 100 / (pageHits + pageMisses)));

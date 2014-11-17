@@ -11,7 +11,7 @@ struct Frame {
 	clock_t time;
 };
 extern struct Frame* frameTable;
-extern unsigned long pageHits, pageMisses;
+extern unsigned long pageHits, pageMisses, pageVictims;
 
 // Sets up the page table structures
 void initializePageTable();

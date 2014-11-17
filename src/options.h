@@ -11,7 +11,6 @@ struct Options {
 	int offsetBits;
 	int pageNum;
 	unsigned long pageMask;
-	int pageBits;
 };
 
 extern struct Options opt;

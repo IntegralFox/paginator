@@ -10,7 +10,7 @@ struct Page {
 };
 struct Page* pageTable;
 struct Frame* frameTable;
-unsigned long pageHits = 0, pageMisses = 0;
+unsigned long pageHits = 0, pageMisses = 0, pageVictims = 0;
 
 void initializePageTable() {
 	pageTable = (struct Page*) calloc(opt.pageNum, sizeof(struct Page));
@@ -86,6 +86,8 @@ unsigned long victimizeFrame() {
 			break;
 		}
 	}
+
+	++pageVictims;
 
 	return frame;
 }
