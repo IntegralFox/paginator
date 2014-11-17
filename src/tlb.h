@@ -5,6 +5,8 @@
 
 #define TLB_SIZE 16
 
+extern unsigned long tlbHits, tlbMisses;
+
 // Set up the tlb to be empty
 void tlbInitialize();
 
@@ -16,4 +18,3 @@ unsigned long tlbFrame(unsigned long);
 void tlbUpdate(unsigned long, unsigned long);
 
 #endif
-

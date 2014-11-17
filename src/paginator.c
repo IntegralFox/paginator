@@ -63,6 +63,15 @@ int main(int argc, char** argv) {
 	fclose(backingStore);
 	freePageTable();
 
+	// Show statistics
+	printf("\n-- Statistics --\n");
+	printf(" TLB hits: %-4ld   TLB misses: %-4ld  H/M Ratio: %-6.3f  Hit Percent: %ld%%\n",
+		tlbHits, tlbMisses, ((double)tlbHits / (double)tlbMisses),
+		(tlbHits * 100 / ((tlbHits + tlbMisses) * 100)));
+	printf("Page hits: %-4ld  Page misses: %-4ld  H/M Ratio: %-6.3f  Hit Percent: %ld%%\n",
+		pageHits, pageMisses, ((double)pageHits / (double)pageMisses),
+		(pageHits * 100 / (pageHits + pageMisses)));
+
 	return 0;
 }
 
