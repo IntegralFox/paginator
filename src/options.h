@@ -5,11 +5,11 @@
 
 struct Options {
 	int printHex;
-	int frameSize;
-	int frameNum;
+	unsigned long frameSize;
+	unsigned long frameNum;
 	unsigned long offsetMask;
-	int offsetBits;
-	int pageNum;
+	unsigned long offsetBits;
+	unsigned long pageNum;
 	unsigned long pageMask;
 };
 

@@ -24,9 +24,9 @@ void parseOptions(int* argc, char*** argv) {
 		} else if (flag == 'h') {
 			opt.printHex = 1;
 		} else if (flag == 'f' ) {
-			opt.frameNum = atoi(optarg);
+			opt.frameNum = atol(optarg);
 		} else if (flag == 'p') {
-			opt.pageNum = atoi(optarg);
+			opt.pageNum = atol(optarg);
 		}
 	}
 	*argc -= optind;

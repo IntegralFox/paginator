@@ -16,7 +16,8 @@ FILE* backingStore;
 unsigned long pageToFrame(unsigned long);
 
 int main(int argc, char** argv) {
-	unsigned long logicalAddress, physicalAddress, page, offset, frame, value;
+	unsigned long logicalAddress, physicalAddress, page, offset, frame;
+	signed char value;
 
 	// Initialize some stuff
 	parseOptions(&argc, &argv);
@@ -66,7 +67,7 @@ int main(int argc, char** argv) {
 	// Show statistics
 	printf("\n-- Statistics --\n");
 	printf("Addresses Resolved: %ld\n", pageHits + pageMisses);
-	printf("Frames: %-4d  Pages: %-4d  Page Victims: %-4d\n", opt.frameNum, opt.pageNum, pageVictims);
+	printf("Frames: %-4ld  Pages: %-4ld  Page Victims: %-4ld\n", opt.frameNum, opt.pageNum, pageVictims);
 	printf("Page hits: %-4ld  Page misses: %-4ld  H/M Ratio: %-6.3f  Page Fault Rate: %3ld%%\n",
 		pageHits, pageMisses, ((double)pageHits / (double)pageMisses),
 		(pageMisses * 100 / (pageHits + pageMisses)));
