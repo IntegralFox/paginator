@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include "paging.h"
 #include "options.h"
+#include "tlb.h"
 
 struct Page {
 	unsigned long frame;
@@ -86,6 +87,9 @@ unsigned long victimizeFrame() {
 			break;
 		}
 	}
+
+	// Invalidate this frame in the tlb
+	tlbInvalidate(frame);
 
 	++pageVictims;
 

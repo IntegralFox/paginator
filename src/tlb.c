@@ -40,3 +40,13 @@ void tlbUpdate(unsigned long page, unsigned long frame) {
 	tlb[next].valid = 1;
 	next = (next + 1) % TLB_SIZE;
 }
+
+void tlbInvalidate(unsigned long frame) {
+	int i;
+	for (i = 0; i < TLB_SIZE; ++i) {
+		if (tlb[i].frame == frame) {
+			tlb[i].valid = 0;
+			return;
+		}
+	}
+}

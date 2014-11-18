@@ -17,4 +17,7 @@ unsigned long tlbFrame(unsigned long);
 // Add a page/frame combo to the buffer
 void tlbUpdate(unsigned long, unsigned long);
 
+// invalidates a tlb entry on victim select
+void tlbInvalidate(unsigned long);
+
 #endif
