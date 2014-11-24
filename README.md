@@ -18,3 +18,9 @@ It uses a binary file as a backing store / swap file and a list of memory access
     -h            Print addresses in hexadecimal.
     -d            Print extra debugging information about tlb hits,
                   victimization, and statistics.
+
+#### Dependencies ####
+Uses `make` and `gcc` to build.
+
+#### Building ####
+Run `make` in the root directory of the project. Object files are placed into the obj directory. Final binary is placed in the bin directory. Run `make clean` to wipe the obj and bin directories.
