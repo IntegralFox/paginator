@@ -86,7 +86,7 @@ unsigned long victimizeFrame() {
 
 	// Invalidate the page in the page table
 	for (i = 0; i < opt.pageNum; ++i) {
-		if (pageTable[i].frame == frame) {
+		if (pageTable[i].frame == frame && pageTable[i].valid) {
 			pageTable[i].valid = 0;
 			break;
 		}

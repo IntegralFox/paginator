@@ -52,7 +52,7 @@ void tlbUpdate(unsigned long page, unsigned long frame) {
 void tlbInvalidate(unsigned long frame) {
 	int i;
 	for (i = 0; i < TLB_SIZE; ++i) {
-		if (tlb[i].frame == frame) {
+		if (tlb[i].frame == frame && tlb[i].valid) {
 			tlb[i].valid = 0;
 			return;
 		}
