@@ -16,4 +16,5 @@ It uses a binary file as a backing store / swap file and a list of memory access
     -f num        Use `num` frames of "physical" memory (default 256).
     -p num        Backing store has `num` pages of memory (default 256).
     -h            Print addresses in hexadecimal.
-    -d            Print extra debugging information about tlb hits, victimization, and statistics.
+    -d            Print extra debugging information about tlb hits,
+                  victimization, and statistics.
