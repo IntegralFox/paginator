@@ -2,7 +2,13 @@ CC=gcc
 CFLAGS=-c -Wall -g
 LFLAGS=-o bin/paginator
 
-all: bin/paginator
+all: bin obj bin/paginator
+
+bin:
+	mkdir bin
+
+obj:
+	mkdir obj
 
 bin/paginator: obj/paginator.o obj/paging.o obj/options.o obj/tlb.o
 	$(CC) $(LFLAGS) obj/paginator.o obj/paging.o obj/options.o obj/tlb.o
