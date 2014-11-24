@@ -1,6 +1,7 @@
 /* Implementation of page related activites */
 
 #include <stdlib.h>
+#include <stdio.h>
 #include "paging.h"
 #include "options.h"
 #include "tlb.h"
@@ -62,6 +63,9 @@ unsigned long findFreeFrame() {
 			return i;
 		}
 	}
+
+	// If execution makes it past the for loop, there is no free frame and
+	// one must be victimized
 	return victimizeFrame();
 }
 
@@ -92,6 +96,13 @@ unsigned long victimizeFrame() {
 	tlbInvalidate(frame);
 
 	++pageVictims;
+
+	if (opt.debug) {
+		if (opt.printHex)
+			printf("Victimized frame 0x%2.2lX holding page 0x%2.2lX\n", frame, i);
+		else
+			printf("Victimized frame %li holding page %li\n", frame, i);
+	}
 
 	return frame;
 }

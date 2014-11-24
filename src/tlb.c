@@ -1,5 +1,7 @@
 /* Implentation of TLB */
 
+#include <stdio.h>
+#include "options.h"
 #include "tlb.h"
 #include "paging.h"
 
@@ -25,6 +27,12 @@ unsigned long tlbFrame(unsigned long page) {
 			frameTable[tlb[i].frame].time = clock();
 			++tlbHits; // It's a tlb hit
 			++pageHits; // Therefore it's also a page hit
+			if (opt.debug) {
+				if (opt.printHex)
+					printf("TLB hit 0x%2.2lX -> 0x%2.2lX\n", page, tlb[i].frame);
+				else
+					printf("TLB hit %li -> %li\n", page, tlb[i].frame);
+			}
 			return tlb[i].frame;
 		}
 	}

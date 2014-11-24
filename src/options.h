@@ -5,6 +5,7 @@
 
 struct Options {
 	int printHex;
+	int debug;
 	unsigned long frameSize;
 	unsigned long frameNum;
 	unsigned long offsetMask;

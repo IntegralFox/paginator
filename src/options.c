@@ -9,6 +9,7 @@ struct Options opt;
 void parseOptions(int* argc, char*** argv) {
 	// Set Defaults
 	opt.printHex = 0;
+	opt.debug = 0;
 	opt.frameSize = 256;
 	opt.frameNum = 256;
 	opt.offsetBits = 8;
@@ -18,7 +19,7 @@ void parseOptions(int* argc, char*** argv) {
 
 	// Parse any new options
 	int flag;
-	while ((flag = getopt(*argc, *argv, "f:hp:")) != -1) {
+	while ((flag = getopt(*argc, *argv, "df:hp:")) != -1) {
 		if (flag == '?') {
 			*argc = 0;
 		} else if (flag == 'h') {
@@ -27,8 +28,12 @@ void parseOptions(int* argc, char*** argv) {
 			opt.frameNum = atol(optarg);
 		} else if (flag == 'p') {
 			opt.pageNum = atol(optarg);
+		} else if (flag == 'd') {
+			opt.debug = 1;
 		}
 	}
+
+	// Update count and starting pointer to account for parsed flags
 	*argc -= optind;
 	*argv += optind;
 }

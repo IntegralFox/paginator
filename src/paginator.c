@@ -45,16 +45,16 @@ int main(int argc, char** argv) {
 	tlbInitialize();
 
 	// Do Stuff
-	while (fscanf(addressList, "%ld", &logicalAddress) != EOF) {
+	while (fscanf(addressList, "%li", &logicalAddress) != EOF) {
 		page = pageOf(logicalAddress);
 		offset = offsetOf(logicalAddress);
 		frame = pageToFrame(page);
 		physicalAddress = (frame << opt.offsetBits) | offset;
 		value = physMem[physicalAddress];
 		if (opt.printHex) {
-			printf("Virtual address: 0x%4.4lX Physical address: 0x%4.4lX Value: 0x%2.2X\n", logicalAddress, physicalAddress, value);
+			printf("Virtual address: 0x%4.4lX Physical address: 0x%4.4lX Value: %i\n", logicalAddress, physicalAddress, value);
 		} else {
-			printf("Virtual address: %ld Physical address: %ld Value: %d\n", logicalAddress, physicalAddress, value);
+			printf("Virtual address: %li Physical address: %li Value: %i\n", logicalAddress, physicalAddress, value);
 		}
 	}
 
@@ -66,12 +66,14 @@ int main(int argc, char** argv) {
 
 	// Show statistics
 	printf("\n-- Statistics --\n");
-	printf("Addresses Resolved: %ld\n", pageHits + pageMisses);
-	printf("Frames: %-4ld  Pages: %-4ld  Page Victims: %-4ld\n", opt.frameNum, opt.pageNum, pageVictims);
-	printf("Page hits: %-4ld  Page misses: %-4ld  H/M Ratio: %-6.3f  Page Fault Rate: %3ld%%\n",
+	if (opt.debug) {
+		printf("Addresses Resolved: %li\n", pageHits + pageMisses);
+		printf("Frames: %-4li  Pages: %-4li  Page Victims: %-4li\n", opt.frameNum, opt.pageNum, pageVictims);
+	}
+	printf("Page hits: %-4li  Page misses: %-4li  H/M Ratio: %-6.3f  Page Fault Rate: %3li%%\n",
 		pageHits, pageMisses, ((double)pageHits / (double)pageMisses),
 		(pageMisses * 100 / (pageHits + pageMisses)));
-	printf(" TLB hits: %-4ld   TLB misses: %-4ld  H/M Ratio: %-6.3f     TLB Hit Rate: %3ld%%\n",
+	printf(" TLB hits: %-4li   TLB misses: %-4li  H/M Ratio: %-6.3f     TLB Hit Rate: %3li%%\n",
 		tlbHits, tlbMisses, ((double)tlbHits / (double)tlbMisses),
 		(tlbHits * 100 / ((tlbHits + tlbMisses) * 100)));
 
